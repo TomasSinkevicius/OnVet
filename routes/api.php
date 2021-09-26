@@ -23,3 +23,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/posts', function(){
     return Post::all();
 });
+
+Route::post('/posts',function() {
+    return Post::create([
+        'title'=> request('title'),
+        'content' => request('content'),
+    ]);
+});
+
