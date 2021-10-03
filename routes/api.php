@@ -2,6 +2,8 @@
 
 use App\Models\Post;
 use App\Http\Controllers\PostsApiController;
+use App\Http\Controllers\CommentsApiController;
+use App\Http\Controllers\TopicsApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,7 +32,7 @@ Route::put('/posts/{post}',[PostsApiController::class,'update']);
 Route::delete('/posts/{post}',[PostsApiController::class,'destroy']);
 
 
-Route::get('/topics', [PostsApiController::class, 'index']);
+Route::get('/topics', [TopicsApiController::class, 'index']);
 
 Route::post('/topics',[TopicsApiController::class,'store']);
 
