@@ -15,7 +15,7 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->string('author');
+            $table->string('author_name');
             $table->string('comment_text');
             $table->foreignId('post_id');
             $table->foreign('post_id')->references('id')->on('posts');

@@ -44,7 +44,7 @@ class CommentsApiController extends Controller
             ]);
 
             return response()->json([
-                "message" => "records updated successfully"
+                $comment
             ], 200);
         }
 
