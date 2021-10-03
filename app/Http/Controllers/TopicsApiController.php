@@ -12,6 +12,8 @@ class TopicsApiController extends Controller
         return Topic::all();
     }
 
+
+
     public function store(){
 
         request()->validate([
@@ -28,7 +30,6 @@ class TopicsApiController extends Controller
         request()->validate([
             'title' => 'required',
         ]);
-
 
         $topic->update([
             'title'=>request('title'),

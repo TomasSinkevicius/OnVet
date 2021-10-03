@@ -22,9 +22,9 @@ class CommentsApiController extends Controller
         ]);
 
         return Comment::create([
-            'author'=> request('title'),
-            'comment_text' => request('content'),
-            'post_id' => request('content'),
+            'author'=> request('author'),
+            'comment_text' => request('comment_text'),
+            'post_id' => request('post_id'),
         ]);
     }
 

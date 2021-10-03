@@ -39,7 +39,6 @@ class PostsApiController extends Controller
 
         $post->update([
             'title'=>request('title'),
-
             'content'=>request('content'),
             'topic_id'=>request('topic_id'),
         ]);
