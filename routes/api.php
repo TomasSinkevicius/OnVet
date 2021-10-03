@@ -47,9 +47,9 @@ Route::get('/comments', [CommentsApiController::class, 'index']);
 
 Route::post('/comments',[CommentsApiController::class,'store']);
 
-Route::put('/comments/{comments}',[CommentsApiController::class,'update']);
+Route::put('/comments/{comment}',[CommentsApiController::class,'update']);
 
-Route::delete('/comments/{comments}',[CommentsApiController::class,'destroy']);
+Route::delete('/comments/{comment}',[CommentsApiController::class,'destroy']);
 
 
 
