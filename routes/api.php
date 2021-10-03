@@ -30,5 +30,24 @@ Route::put('/posts/{post}',[PostsApiController::class,'update']);
 Route::delete('/posts/{post}',[PostsApiController::class,'destroy']);
 
 
+Route::get('/topics', [PostsApiController::class, 'index']);
+
+Route::post('/topics',[TopicsApiController::class,'store']);
+
+Route::put('/topics/{topic}',[TopicsApiController::class,'update']);
+
+Route::delete('/topics/{topic}',[TopicsApiController::class,'destroy']);
+
+
+Route::get('/comments', [CommentsApiController::class, 'index']);
+
+Route::post('/comments',[CommentsApiController::class,'store']);
+
+Route::put('/comments/{topic}',[CommentsApiController::class,'update']);
+
+Route::delete('/comments/{topic}',[CommentsApiController::class,'destroy']);
+
+
+
 
 
