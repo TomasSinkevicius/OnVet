@@ -18,11 +18,13 @@ class PostsApiController extends Controller
         request()->validate([
             'title' => 'required',
             'content'=> 'required',
+            'topic_id'=> 'required',
         ]);
 
         return Post::create([
             'title'=> request('title'),
             'content' => request('content'),
+            'topic_id' => request('content'),
         ]);
     }
 
@@ -31,6 +33,7 @@ class PostsApiController extends Controller
         request()->validate([
             'title' => 'required',
             'content'=> 'required',
+            'topic_id'=> 'required',
         ]);
 
 
@@ -38,6 +41,7 @@ class PostsApiController extends Controller
             'title'=>request('title'),
 
             'content'=>request('content'),
+            'topic_id'=>request('content'),
         ]);
     }
 
