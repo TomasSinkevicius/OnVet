@@ -13,6 +13,18 @@ class PostsApiController extends Controller
         return Post::all();
     }
 
+    public function getPost(Post $post){
+
+        if ($post->exists()) {
+            $post->toJson(JSON_PRETTY_PRINT);
+            return response($post, 200);
+          } else {
+            return response()->json([
+              "message" => "Post not found"
+            ], 404);
+          }
+    }
+
     public function store(){
 
         request()->validate([

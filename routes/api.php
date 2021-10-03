@@ -27,6 +27,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/posts', [PostsApiController::class, 'index']);
 
+Route::get('/posts/{post}', [PostsApiController::class, 'getPost']);
+
 Route::post('/posts',[PostsApiController::class,'store']);
 
 Route::put('/posts/{post}',[PostsApiController::class,'update']);
