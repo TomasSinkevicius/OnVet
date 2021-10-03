@@ -36,12 +36,22 @@ class CommentsApiController extends Controller
             'post_id'=>'required',
         ]);
 
+        if($comment->exists()){
+            $comment->update([
+                'author'=> request('author'),
+                'comment_text' => request('comment_text'),
+                'post_id' => request('post_id'),
+            ]);
 
-        $comment->update([
-            'author'=> request('title'),
-            'comment_text' => request('content'),
-            'post_id' => request('content'),
-        ]);
+            return response()->json([
+                "message" => "records updated successfully"
+            ], 200);
+        }
+
+        else {return response()->json([
+            "message" => "Student not found"
+        ], 404);}
+
     }
 
     public function destroy(Comment $comment){
