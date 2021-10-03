@@ -16,28 +16,31 @@ class CommentsApiController extends Controller
     public function store(){
 
         request()->validate([
-            'title' => 'required',
-            'content'=> 'required',
+            'username' => 'required',
+            'comment_text'=> 'required',
+            'post_id'=>'required',
         ]);
 
         return Comment::create([
-            'title'=> request('title'),
-            'content' => request('content'),
+            'username'=> request('title'),
+            'comment_text' => request('content'),
+            'post_id' => request('content'),
         ]);
     }
 
     public function update(Comment $comment){
 
         request()->validate([
-            'title' => 'required',
-            'content'=> 'required',
+            'username' => 'required',
+            'comment_text'=> 'required',
+            'post_id'=>'required',
         ]);
 
 
         $comment->update([
-            'title'=>request('title'),
-
-            'content'=>request('content'),
+            'username'=> request('title'),
+            'comment_text' => request('content'),
+            'post_id' => request('content'),
         ]);
     }
 

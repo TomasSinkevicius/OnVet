@@ -16,12 +16,10 @@ class TopicsApiController extends Controller
 
         request()->validate([
             'title' => 'required',
-            'content'=> 'required',
         ]);
 
         return Topic::create([
             'title'=> request('title'),
-            'content' => request('content'),
         ]);
     }
 
@@ -29,14 +27,11 @@ class TopicsApiController extends Controller
 
         request()->validate([
             'title' => 'required',
-            'content'=> 'required',
         ]);
 
 
         $topic->update([
             'title'=>request('title'),
-
-            'content'=>request('content'),
         ]);
     }
 
