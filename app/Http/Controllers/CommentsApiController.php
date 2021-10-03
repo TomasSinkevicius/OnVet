@@ -16,13 +16,13 @@ class CommentsApiController extends Controller
     public function store(){
 
         request()->validate([
-            'author' => 'required',
+            'author_name' => 'required',
             'comment_text'=> 'required',
             'post_id'=>'required',
         ]);
 
         return Comment::create([
-            'author'=> request('author'),
+            'author_name'=> request('author_name'),
             'comment_text' => request('comment_text'),
             'post_id' => request('post_id'),
         ]);
@@ -31,14 +31,14 @@ class CommentsApiController extends Controller
     public function update(Comment $comment){
 
         request()->validate([
-            'author' => 'required',
+            'author_name' => 'required',
             'comment_text'=> 'required',
             'post_id'=>'required',
         ]);
 
         if($comment->exists()){
             $comment->update([
-                'author'=> request('author'),
+                'author_name'=> request('author_name'),
                 'comment_text' => request('comment_text'),
                 'post_id' => request('post_id'),
             ]);
