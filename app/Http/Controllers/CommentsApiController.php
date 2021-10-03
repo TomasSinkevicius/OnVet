@@ -15,11 +15,11 @@ class CommentsApiController extends Controller
 
     public function store(){
 
-        request()->validate([
-            'author_name' => 'required',
-            'comment_text'=> 'required',
-            'post_id'=>'required',
-        ]);
+        // request()->validate([
+        //     'author_name' => 'required',
+        //     'comment_text'=> 'required',
+        //     'post_id'=>'required',
+        // ]);
 
         return Comment::create([
             'author_name'=> request('author_name'),
