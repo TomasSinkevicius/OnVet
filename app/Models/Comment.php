@@ -10,6 +10,6 @@ class Comment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'username','comment_text','post_id'
+        '2021_10_03_131507_create_comments_table.php','comment_text','post_id'
     ];
 }

@@ -24,7 +24,7 @@ class PostsApiController extends Controller
         return Post::create([
             'title'=> request('title'),
             'content' => request('content'),
-            'topic_id' => request('content'),
+            'topic_id' => request('topic_id'),
         ]);
     }
 
@@ -41,7 +41,7 @@ class PostsApiController extends Controller
             'title'=>request('title'),
 
             'content'=>request('content'),
-            'topic_id'=>request('content'),
+            'topic_id'=>request('topic_id'),
         ]);
     }
 

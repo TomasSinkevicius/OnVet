@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Post;
+use App\Models\Topic;
+use App\Models\Comment;
 use App\Http\Controllers\PostsApiController;
 use App\Http\Controllers\CommentsApiController;
 use App\Http\Controllers\TopicsApiController;

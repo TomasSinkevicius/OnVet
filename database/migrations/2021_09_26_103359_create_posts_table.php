@@ -17,7 +17,8 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('content');
-            $table->int('topic_id');
+            $table->foreignId('topic_id');
+            $table->foreign('topic_id')->references('id')->on('topics');
             $table->timestamps();
         });
     }
