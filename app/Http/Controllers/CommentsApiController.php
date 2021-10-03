@@ -40,7 +40,7 @@ class CommentsApiController extends Controller
             ]);
 
             return response()->json([
-                $comment
+                $comment,"wtf"
             ], 200);
         }
 
