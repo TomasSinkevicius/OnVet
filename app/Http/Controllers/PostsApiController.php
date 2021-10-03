@@ -13,10 +13,10 @@ class PostsApiController extends Controller
         return Post::all();
     }
 
-    public function getPost(Post $post){
+    public function getPost($id){
 
-        if ($post->exists()) {
-            $post->toJson(JSON_PRETTY_PRINT);
+          if (Post::where('id', $id)->exists()) {
+            $post = Post::where('id', $id)->get();
             return response($post, 200);
           } else {
             return response()->json([
@@ -40,21 +40,40 @@ class PostsApiController extends Controller
         ]);
     }
 
-    public function update(Post $post){
+    public function update(Request $request, $id){
 
-        $post->update([
-            'title'=>request('title'),
-            'content'=>request('content'),
-            'topic_id'=>request('topic_id'),
-        ]);
+        if (Post::where('id', $id)->exists()) {
+            $post = Post::find($id);
+            $post->title = is_null($request->title) ? $post->title : $request->title;
+            $post->content = is_null($request->content) ? $post->content : $request->content;
+            $post->topic_id = is_null($request->topic_id) ? $post->topic_id : $request->topic_id;
+            $post->save();
+
+            return response()->json([
+                "message" => "records updated successfully"
+            ], 200);
+            } else {
+            return response()->json([
+                "message" => "Post not found"
+            ], 404);
+
+        }
+
     }
 
-    public function destroy(Post $post){
+    public function destroy($id){
 
-        $success = $post->delete();
+        if(Post::where('id', $id)->exists()) {
+            $post = Post::find($id);
+            $post->delete();
 
-    return [
-        'success'=> $success
-    ];
+            return response()->json([
+              "message" => "post deleted"
+            ], 202);
+          } else {
+            return response()->json([
+              "message" => "post not found"
+            ], 404);
+          }
     }
 }

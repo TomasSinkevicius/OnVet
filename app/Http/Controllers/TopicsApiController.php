@@ -12,6 +12,28 @@ class TopicsApiController extends Controller
         return Topic::all();
     }
 
+    public function getTopic($id){
+
+        // if ($topic->exists()) {
+        //     $topic->toJson(JSON_PRETTY_PRINT);
+        //     return response($topic, 200);
+        //   } else {
+        //     return response()->json([
+        //       "message" => "Post not found"
+        //     ], 404);
+        //   }
+
+
+          if (Topic::where('id', $id)->exists()) {
+            $topic = Topic::where('id', $id)->get();
+            return response($topic, 200);
+          } else {
+            return response()->json([
+              "message" => "Topic not found"
+            ], 404);
+          }
+    }
+
 
 
     public function store(){
@@ -25,23 +47,38 @@ class TopicsApiController extends Controller
         ]);
     }
 
-    public function update(Topic $topic){
+    public function update(Request $request, $id){
 
-        request()->validate([
-            'title' => 'required',
-        ]);
+        if (Topic::where('id', $id)->exists()) {
+            $topic = Topic::find($id);
+            $topic->title = is_null($request->title) ? $topic->title : $request->title;
+            $topic->save();
 
-        $topic->update([
-            'title'=>request('title'),
-        ]);
+            return response()->json([
+                "message" => "topic updated successfully"
+            ], 200);
+            } else {
+            return response()->json([
+                "message" => "topic not found"
+            ], 404);
+
+        }
     }
 
-    public function destroy(Topic $topic){
+    public function destroy($id){
 
-        $success = $topic->delete();
+        if(Topic::where('id', $id)->exists()) {
+            $topic = Topic::find($id);
+            $topic->delete();
 
-    return [
-        'success'=> $success
-    ];
+            return response()->json([
+              "message" => "topic deleted"
+            ], 202);
+          } else {
+            return response()->json([
+              "message" => "topic not found"
+            ], 404);
+          }
     }
+
 }

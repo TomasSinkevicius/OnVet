@@ -38,6 +38,8 @@ Route::delete('/posts/{post}',[PostsApiController::class,'destroy']);
 
 Route::get('/topics', [TopicsApiController::class, 'index']);
 
+Route::get('/topics/{topic}', [TopicsApiController::class, 'getTopic']);
+
 Route::post('/topics',[TopicsApiController::class,'store']);
 
 Route::put('/topics/{topic}',[TopicsApiController::class,'update']);
@@ -46,6 +48,8 @@ Route::delete('/topics/{topic}',[TopicsApiController::class,'destroy']);
 
 
 Route::get('/comments', [CommentsApiController::class, 'index']);
+
+Route::get('/comments/{comment}', [CommentsApiController::class, 'getComment']);
 
 Route::post('/comments',[CommentsApiController::class,'store']);
 
