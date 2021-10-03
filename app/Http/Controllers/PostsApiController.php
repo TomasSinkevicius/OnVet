@@ -30,13 +30,6 @@ class PostsApiController extends Controller
 
     public function update(Post $post){
 
-        request()->validate([
-            'title' => 'required',
-            'content'=> 'required',
-            'topic_id'=> 'required',
-        ]);
-
-
         $post->update([
             'title'=>request('title'),
             'content'=>request('content'),
