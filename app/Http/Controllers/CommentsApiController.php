@@ -30,11 +30,7 @@ class CommentsApiController extends Controller
 
     public function update(Comment $comment){
 
-        request()->validate([
-            'author_name' => 'required',
-            'comment_text'=> 'required',
-            'post_id'=>'required',
-        ]);
+
 
         if($comment->exists()){
             $comment->update([
