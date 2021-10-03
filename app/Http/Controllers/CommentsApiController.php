@@ -28,26 +28,35 @@ class CommentsApiController extends Controller
         ]);
     }
 
+    // public function update(Comment $comment){
+
+
+
+    //     if($comment->exists()){
+    //         $comment->update([
+    //             'author_name'=> request('author_name'),
+    //             'comment_text' => request('comment_text'),
+    //             'post_id' => request('post_id'),
+    //         ]);
+
+    //         return response()->json([
+    //             $comment,"wtf"
+    //         ], 200);
+    //     }
+
+    //     else {return response()->json([
+    //         "message" => "Student not found"
+    //     ], 404);}
+
+    // }
+
     public function update(Comment $comment){
 
-
-
-        if($comment->exists()){
-            $comment->update([
-                'author_name'=> request('author_name'),
-                'comment_text' => request('comment_text'),
-                'post_id' => request('post_id'),
-            ]);
-
-            return response()->json([
-                $comment,"wtf"
-            ], 200);
-        }
-
-        else {return response()->json([
-            "message" => "Student not found"
-        ], 404);}
-
+        $comment->update([
+            'author_name'=>request('author_name'),
+            'comment_text'=>request('comment_text'),
+            'post_id'=>request('post_id'),
+        ]);
     }
 
     public function destroy(Comment $comment){
