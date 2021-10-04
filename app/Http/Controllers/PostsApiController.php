@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Comment;
 
 class PostsApiController extends Controller
 {
@@ -75,5 +76,17 @@ class PostsApiController extends Controller
               "message" => "post not found"
             ], 404);
           }
+    }
+
+    public function getPostComments($id, Comment $comments){
+        if(Post::where('id', $id)->exists()){
+            return response(array(
+                $post = Post::where('id', $id)->get(),
+                $comments = Comment::where('post_id', $id)->get()), 200);
+        } else {
+            return response()->json([
+                "message" => "Post not found"
+            ], 404);
+        }
     }
 }
