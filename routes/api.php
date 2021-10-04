@@ -35,7 +35,7 @@ Route::put('/posts/{post}',[PostsApiController::class,'update']);
 
 Route::delete('/posts/{post}',[PostsApiController::class,'destroy']);
 
-Route::get('/posts/{post}',[PostsApiController::class,'getPostComments']);
+Route::get('/posts/{post}/comments',[PostsApiController::class,'getPostComments']);
 
 
 
