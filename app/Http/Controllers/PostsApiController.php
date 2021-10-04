@@ -80,8 +80,8 @@ class PostsApiController extends Controller
 
     public function getPostComments($id, Comment $comments){
         if(Post::where('id', $id)->exists()){
+            $post = Post::where('id', $id)->get();
             return response(array(
-                $post = Post::where('id', $id)->get(),
                 $comments = Comment::where('post_id', $id)->get()), 200);
         } else {
             return response()->json([
