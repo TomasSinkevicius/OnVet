@@ -44,11 +44,11 @@ class CommentsApiController extends Controller
             $comment->save();
 
             return response()->json([
-                "message" => "records updated successfully"
+                "message" => "comment updated successfully"
             ], 200);
             } else {
             return response()->json([
-                "message" => "Student not found"
+                "message" => "comment not found"
             ], 404);
 
         }
