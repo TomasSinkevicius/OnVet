@@ -64,23 +64,23 @@ class PostsApiController extends Controller
 
     public function destroy($id){
 
-        if($id == null){
-            return response()->json([
-                "message" => "not allowed"
-              ], 404);
-        }
-        if(Post::where('id', $id)->exists()) {
-            $post = Post::find($id);
-            $post->delete();
 
             return response()->json([
-              "message" => "post deleted"
-            ], 202);
-          } else {
-            return response()->json([
-              "message" => "post not found"
-            ], 404);
-          }
+                $id
+              ], 404);
+
+        // if(Post::where('id', $id)->exists()) {
+        //     $post = Post::find($id);
+        //     $post->delete();
+
+        //     return response()->json([
+        //       "message" => "post deleted"
+        //     ], 202);
+        //   } else {
+        //     return response()->json([
+        //       "message" => "post not found"
+        //     ], 404);
+        //   }
     }
 
     public function getPostComments($id, Comment $comments){
