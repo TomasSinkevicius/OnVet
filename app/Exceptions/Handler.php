@@ -7,7 +7,7 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
-    /**
+   /**
      * A list of the exception types that are not reported.
      *
      * @var array
@@ -37,5 +37,44 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * @param Request $request
+     * @param Throwable $exception
+     * @return JsonResponse|Response|\Symfony\Component\HttpFoundation\Response
+     * @throws Throwable
+     */
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof ModelNotFoundException && $request->wantsJson()) {
+            return response()->json([
+                'status' => '404',
+                'message' => 'Model Not Found',
+            ], 404);
+        }
+
+        if (($exception instanceof MethodNotAllowedHttpException && $exception->getStatusCode() === 405)) {
+            return response()->json([
+                'status' => '405',
+                'message' => 'Method not allowed',
+            ], 405);
+        }
+
+        if (($exception instanceof NotFoundHttpException && $exception->getStatusCode() === 404)) {
+            return response()->json([
+                'status' => '404',
+                'message' => 'Endpoint Not Found',
+            ], 404);
+        }
+
+        if ($exception->getStatusCode() === 500) {
+            return response()->json([
+                'status' => '500',
+                'message' => 'Internal Server Error',
+            ], 500);
+        }
+
+        return parent::render($request, $exception);
     }
 }
