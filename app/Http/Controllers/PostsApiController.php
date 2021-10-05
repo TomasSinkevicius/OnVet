@@ -64,6 +64,11 @@ class PostsApiController extends Controller
 
     public function destroy($id){
 
+        if($id == null){
+            return response()->json([
+                "message" => "not allowed"
+              ], 404);
+        }
         if(Post::where('id', $id)->exists()) {
             $post = Post::find($id);
             $post->delete();
