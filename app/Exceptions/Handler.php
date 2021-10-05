@@ -1,13 +1,20 @@
 <?php
 
+
 namespace App\Exceptions;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
-   /**
+    /**
      * A list of the exception types that are not reported.
      *
      * @var array
@@ -38,7 +45,6 @@ class Handler extends ExceptionHandler
             //
         });
     }
-
     /**
      * @param Request $request
      * @param Throwable $exception
