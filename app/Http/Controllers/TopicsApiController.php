@@ -33,16 +33,6 @@ class TopicsApiController extends Controller
 
     public function getTopic($id){
 
-        // if ($topic->exists()) {
-        //     $topic->toJson(JSON_PRETTY_PRINT);
-        //     return response($topic, 200);
-        //   } else {
-        //     return response()->json([
-        //       "message" => "Post not found"
-        //     ], 404);
-        //   }
-
-
           if (Topic::where('id', $id)->exists()) {
             $topic = Topic::where('id', $id)->get();
             return response($topic, 200);
@@ -61,9 +51,21 @@ class TopicsApiController extends Controller
             'title' => 'required',
         ]);
 
-        return Topic::create([
-            'title'=> request('title'),
-        ]);
+        $isGuest = auth()->guest();
+
+        if(! $isGuest){
+            $user_id = auth()->user()->id;
+
+            return Topic::create([
+                'title'=> request('title'),
+                'user_id'=> $user_id,
+            ]);
+        }
+        else{
+            return response()->json([
+                "message" => "Unauthorized"
+              ], 401);
+        }
     }
 
     public function update(Request $request, $id){
@@ -80,7 +82,6 @@ class TopicsApiController extends Controller
             return response()->json([
                 "message" => "topic not found"
             ], 404);
-
         }
     }
 
