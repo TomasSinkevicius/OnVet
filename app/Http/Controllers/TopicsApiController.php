@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Topic;
+use Illuminate\Support\Facades\Auth;
 
 class TopicsApiController extends Controller
 {
@@ -12,17 +13,25 @@ class TopicsApiController extends Controller
         return Topic::all();
     }
 
+    public function test(){
+
+        $isGuest = auth()->guest();
+
+        if(! $isGuest){
+            $user = auth()->user();
+            $user_role = auth()->user()->role;
+            return response()->json($user, 200);
+        }
+        else{
+            return response()->json([
+                "message" => "Unauthorized"
+              ], 401);
+        }
+    }
+
+
+
     public function getTopic($id){
-
-        // if ($topic->exists()) {
-        //     $topic->toJson(JSON_PRETTY_PRINT);
-        //     return response($topic, 200);
-        //   } else {
-        //     return response()->json([
-        //       "message" => "Post not found"
-        //     ], 404);
-        //   }
-
 
           if (Topic::where('id', $id)->exists()) {
             $topic = Topic::where('id', $id)->get();
@@ -42,43 +51,109 @@ class TopicsApiController extends Controller
             'title' => 'required',
         ]);
 
-        return Topic::create([
-            'title'=> request('title'),
-        ]);
+        $isGuest = auth()->guest();
+
+        if(! $isGuest){
+            $user_id = auth()->user()->id;
+
+            return Topic::create([
+                'title'=> request('title'),
+                'user_id'=> $user_id,
+            ]);
+        }
+        else{
+            return response()->json([
+                "message" => "Unauthorized"
+              ], 401);
+        }
     }
 
     public function update(Request $request, $id){
 
-        if (Topic::where('id', $id)->exists()) {
-            $topic = Topic::find($id);
-            $topic->title = is_null($request->title) ? $topic->title : $request->title;
-            $topic->save();
+        $isGuest = auth()->guest();
 
-            return response()->json([
-                "message" => "topic updated successfully"
-            ], 200);
+        if(! $isGuest){
+
+            $user_id = auth()->user()->id;
+            $user_role = auth()->user()->role;
+
+
+            if (Topic::where('id', $id)->exists()) {
+
+                $topic = Topic::find($id);
+
+                if($user_id == $topic->user_id || $user_role == 1){
+
+                $topic->title = is_null($request->title) ? $topic->title : $request->title;
+                $topic->user_id = $topic->user_id;
+                $topic->save();
+
+                return response()->json([
+                    "message" => "topic updated successfully"
+                ], 200);}
+                else{
+                    return response()->json([
+                        "message" => "Unauthorized"
+                    ], 401);
+                }
             } else {
             return response()->json([
-                "message" => "topic not found"
+                 "message" => "topic not found"
             ], 404);
-
+            }
+        }
+        else{
+            return response()->json([
+                "message" => "Unauthorized"
+              ], 401);
         }
     }
 
     public function destroy($id){
 
-        if(Topic::where('id', $id)->exists()) {
-            $topic = Topic::find($id);
-            $topic->delete();
+        $isGuest = auth()->guest();
 
+        if(! $isGuest){
+
+            $user_id = auth()->user()->id;
+            $user_role = auth()->user()->role;
+
+
+            if (Topic::where('id', $id)->exists()) {
+
+                $topic = Topic::find($id);
+
+                if($user_id == $topic->user_id || $user_role == 1){
+
+                    if(Topic::where('id', $id)->exists()) {
+                        $topic = Topic::find($id);
+                        $topic->delete();
+
+                        return response()->json([
+                          "message" => "topic deleted"
+                        ], 202);
+                      } else {
+                        return response()->json([
+                          "message" => "topic not found"
+                        ], 404);
+                      }
+                }
+                else{
+                    return response()->json([
+                        "message" => "Unauthorized"
+                    ], 401);
+                }
+            } else {
             return response()->json([
-              "message" => "topic deleted"
-            ], 202);
-          } else {
-            return response()->json([
-              "message" => "topic not found"
+                 "message" => "topic not found"
             ], 404);
-          }
+            }
+        }
+        else{
+            return response()->json([
+                "message" => "Unauthorized"
+              ], 401);
+        }
     }
 
 }
