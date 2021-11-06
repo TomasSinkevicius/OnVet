@@ -20,9 +20,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::group([
     'middleware' => 'api',
@@ -35,43 +35,44 @@ Route::group([
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
 });
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+
+// Route::get('/posts', [PostsApiController::class, 'index']);
+
+// Route::get('/posts/{post}', [PostsApiController::class, 'getPost']);
+
+// Route::post('/posts',[PostsApiController::class,'store']);
+
+// Route::put('/posts/{post}',[PostsApiController::class,'update']);
+
+// Route::delete('/posts/{post}',[PostsApiController::class,'destroy']);
+
+// Route::get('/posts/{post}/comments',[PostsApiController::class,'getPostComments']);
 
 
-Route::get('/posts', [PostsApiController::class, 'index']);
-
-Route::get('/posts/{post}', [PostsApiController::class, 'getPost']);
-
-Route::post('/posts',[PostsApiController::class,'store']);
-
-Route::put('/posts/{post}',[PostsApiController::class,'update']);
-
-Route::delete('/posts/{post}',[PostsApiController::class,'destroy']);
-
-Route::get('/posts/{post}/comments',[PostsApiController::class,'getPostComments']);
 
 
+// Route::get('/topics', [TopicsApiController::class, 'index']);
+
+// Route::get('/topics/{topic}', [TopicsApiController::class, 'getTopic']);
+
+// Route::post('/topics',[TopicsApiController::class,'store']);
+
+// Route::put('/topics/{topic}',[TopicsApiController::class,'update']);
+
+// Route::delete('/topics/{topic}',[TopicsApiController::class,'destroy']);
 
 
-Route::get('/topics', [TopicsApiController::class, 'index']);
+// Route::get('/comments', [CommentsApiController::class, 'index']);
 
-Route::get('/topics/{topic}', [TopicsApiController::class, 'getTopic']);
+// Route::get('/comments/{comment}', [CommentsApiController::class, 'getComment']);
 
-Route::post('/topics',[TopicsApiController::class,'store']);
+// Route::post('/comments',[CommentsApiController::class,'store']);
 
-Route::put('/topics/{topic}',[TopicsApiController::class,'update']);
+// Route::put('/comments/{comment}',[CommentsApiController::class,'update']);
 
-Route::delete('/topics/{topic}',[TopicsApiController::class,'destroy']);
-
-
-Route::get('/comments', [CommentsApiController::class, 'index']);
-
-Route::get('/comments/{comment}', [CommentsApiController::class, 'getComment']);
-
-Route::post('/comments',[CommentsApiController::class,'store']);
-
-Route::put('/comments/{comment}',[CommentsApiController::class,'update']);
-
-Route::delete('/comments/{comment}',[CommentsApiController::class,'destroy']);
+// Route::delete('/comments/{comment}',[CommentsApiController::class,'destroy']);
 
 
 
