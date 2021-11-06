@@ -55,6 +55,8 @@ Route::get('/posts/{post}/comments',[PostsApiController::class,'getPostComments'
 
 Route::get('/topics', [TopicsApiController::class, 'index']);
 
+Route::get('/test', [TopicsApiController::class, 'test']);
+
 Route::get('/topics/{topic}', [TopicsApiController::class, 'getTopic']);
 
 Route::post('/topics',[TopicsApiController::class,'store']);

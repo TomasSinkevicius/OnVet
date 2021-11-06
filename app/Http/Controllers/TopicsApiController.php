@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Topic;
+use Illuminate\Support\Facades\Auth;
 
 class TopicsApiController extends Controller
 {
@@ -11,6 +12,24 @@ class TopicsApiController extends Controller
 
         return Topic::all();
     }
+
+    public function test(){
+
+        $isGuest = auth()->guest();
+
+        if(! $isGuest){
+            $user = auth()->user();
+            $user_role = auth()->user()->role;
+            return response()->json($user, 200);
+        }
+        else{
+            return response()->json([
+                "message" => "Unauthorized"
+              ], 401);
+        }
+    }
+
+
 
     public function getTopic($id){
 
