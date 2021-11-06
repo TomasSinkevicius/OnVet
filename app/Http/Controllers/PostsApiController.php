@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 
+
 class PostsApiController extends Controller
 {
     //
@@ -29,59 +30,114 @@ class PostsApiController extends Controller
 
     public function store(){
 
+        // request()->validate([
+        //     'title' => 'required',
+        //     'content'=> 'required',
+        //     'topic_id'=> 'required',
+        // ]);
+
+        // return Post::create([
+        //     'title'=> request('title'),
+        //     'content' => request('content'),
+        //     'topic_id' => request('topic_id'),
+        //     'user_id'=> $user_id,
+        // ]);
+
+
+
         request()->validate([
             'title' => 'required',
             'content'=> 'required',
             'topic_id'=> 'required',
         ]);
 
-        return Post::create([
-            'title'=> request('title'),
-            'content' => request('content'),
-            'topic_id' => request('topic_id'),
-        ]);
+        $isGuest = auth()->guest();
+
+        if(! $isGuest){
+            $user_id = auth()->user()->id;
+
+            return Post::create([
+                'title'=> request('title'),
+                'content' => request('content'),
+                'topic_id' => request('topic_id'),
+                'user_id'=> $user_id,
+            ]);
+        }
+        else{
+            return response()->json([
+                "message" => "Unauthorized"
+              ], 401);
+        }
     }
 
     public function update(Request $request, $id){
 
-        if (Post::where('id', $id)->exists()) {
-            $post = Post::find($id);
-            $post->title = is_null($request->title) ? $post->title : $request->title;
-            $post->content = is_null($request->content) ? $post->content : $request->content;
-            $post->topic_id = is_null($request->topic_id) ? $post->topic_id : $request->topic_id;
-            $post->save();
+        $isGuest = auth()->guest();
 
-            return response()->json([
-                "message" => "records updated successfully"
-            ], 200);
-            } else {
-            return response()->json([
-                "message" => "Post not found"
-            ], 404);
+        if(! $isGuest){
 
+            $user_id = auth()->user()->id;
+            $user_role = auth()->user()->role;
+
+
+            if (Post::where('id', $id)->exists()) {
+
+                $post = Post::find($id);
+
+                if($user_id == $post->user_id || $user_role == 1){
+
+                $post->title = is_null($request->title) ? $post->title : $request->title;
+                $post->content = is_null($request->content) ? $post->content : $request->content;
+                $post->topic_id = is_null($request->topic_id) ? $post->topic_id : $request->topic_id;
+                $post->user_id = $post->user_id;
+                $post->save();
+
+                return response()->json([
+                    "message" => "Post updated successfully",
+                    "post" => $post
+                ], 200);}
+                } else {
+                return response()->json([
+                    "message" => "Post not found"
+                ], 404);
+            }
+        }
+        else{
+            return response()->json([
+                "message" => "Unauthorized"
+              ], 401);
         }
 
     }
 
     public function destroy($id){
 
+          $isGuest = auth()->guest();
 
-            return response()->json([
-                $id
-              ], 404);
+          if(! $isGuest){
 
-        // if(Post::where('id', $id)->exists()) {
-        //     $post = Post::find($id);
-        //     $post->delete();
+              $user_id = auth()->user()->id;
+              $user_role = auth()->user()->role;
 
-        //     return response()->json([
-        //       "message" => "post deleted"
-        //     ], 202);
-        //   } else {
-        //     return response()->json([
-        //       "message" => "post not found"
-        //     ], 404);
-        //   }
+
+              if(Post::where('id', $id)->exists()) {
+                $post = Post::find($id);
+                $post->delete();
+
+                return response()->json([
+                  "message" => "post deleted"
+                ], 202);
+              } else {
+                return response()->json([
+                  "message" => "post not found"
+                ], 404);
+              }
+          }
+          else{
+              return response()->json([
+                  "message" => "Unauthorized"
+                ], 401);
+          }
     }
 
     public function getPostComments($id, Comment $comments){
