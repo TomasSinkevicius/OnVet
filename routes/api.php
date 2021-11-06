@@ -20,9 +20,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
 
 Route::group([
     'middleware' => 'api',
@@ -36,8 +34,6 @@ Route::group([
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
 });
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::get('/posts', [PostsApiController::class, 'index']);
 
 Route::get('/posts/{post}', [PostsApiController::class, 'getPost']);
 
