@@ -30,21 +30,6 @@ class PostsApiController extends Controller
 
     public function store(){
 
-        // request()->validate([
-        //     'title' => 'required',
-        //     'content'=> 'required',
-        //     'topic_id'=> 'required',
-        // ]);
-
-        // return Post::create([
-        //     'title'=> request('title'),
-        //     'content' => request('content'),
-        //     'topic_id' => request('topic_id'),
-        //     'user_id'=> $user_id,
-        // ]);
-
-
-
         request()->validate([
             'title' => 'required',
             'content'=> 'required',
