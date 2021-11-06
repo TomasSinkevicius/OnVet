@@ -8,6 +8,7 @@ use App\Http\Controllers\CommentsApiController;
 use App\Http\Controllers\TopicsApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
