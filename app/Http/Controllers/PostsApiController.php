@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Topic;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,12 +42,19 @@ class PostsApiController extends Controller
         if(! $isGuest){
             $user_id = auth()->user()->id;
 
-            return Post::create([
-                'title'=> request('title'),
-                'content' => request('content'),
-                'topic_id' => request('topic_id'),
-                'user_id'=> $user_id,
-            ]);
+            if (Topic::where('id', request('topic_id'))->exists()) {
+                return Post::create([
+                    'title'=> request('title'),
+                    'content' => request('content'),
+                    'topic_id' => request('topic_id'),
+                    'user_id'=> $user_id,
+                ]);
+            }
+            else{
+                return response()->json([
+                    "message" => "Topic not found"
+                  ], 404);
+            }
         }
         else{
             return response()->json([
@@ -64,7 +72,6 @@ class PostsApiController extends Controller
             $user_id = auth()->user()->id;
             $user_role = auth()->user()->role;
 
-
             if (Post::where('id', $id)->exists()) {
 
                 $post = Post::find($id);
@@ -73,7 +80,8 @@ class PostsApiController extends Controller
 
                 $post->title = is_null($request->title) ? $post->title : $request->title;
                 $post->content = is_null($request->content) ? $post->content : $request->content;
-                $post->topic_id = is_null($request->topic_id) ? $post->topic_id : $request->topic_id;
+                // $post->topic_id = is_null($request->topic_id) ? $post->topic_id : $request->topic_id;
+                $post->topic_id = $post->topic_id;
                 $post->user_id = $post->user_id;
                 $post->save();
 
@@ -81,10 +89,15 @@ class PostsApiController extends Controller
                     "message" => "Post updated successfully",
                     "post" => $post
                 ], 200);}
+                else{
+                    return response()->json([
+                        "message" => "Unauthorized"
+                    ], 401);
+                }
                 } else {
-                return response()->json([
-                    "message" => "Post not found"
-                ], 404);
+                    return response()->json([
+                        "message" => "Post not found"
+                    ], 404);
             }
         }
         else{
@@ -106,16 +119,27 @@ class PostsApiController extends Controller
 
 
               if(Post::where('id', $id)->exists()) {
+
                 $post = Post::find($id);
+
+                if($user_id == $post->user_id || $user_role == 1){
+
                 $post->delete();
 
                 return response()->json([
                   "message" => "post deleted"
-                ], 202);
+                ], 202);}
+
+                else {
+                    return response()->json([
+                        "message" => "Unauthorized"
+                      ], 401);
+                  }
+
               } else {
                 return response()->json([
-                  "message" => "post not found"
-                ], 404);
+                    "message" => "post not found"
+                  ], 404);
               }
           }
           else{

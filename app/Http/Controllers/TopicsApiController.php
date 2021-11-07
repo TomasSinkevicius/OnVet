@@ -125,18 +125,11 @@ class TopicsApiController extends Controller
 
                 if($user_id == $topic->user_id || $user_role == 1){
 
-                    if(Topic::where('id', $id)->exists()) {
-                        $topic = Topic::find($id);
                         $topic->delete();
 
                         return response()->json([
                           "message" => "topic deleted"
                         ], 202);
-                      } else {
-                        return response()->json([
-                          "message" => "topic not found"
-                        ], 404);
-                      }
                 }
                 else{
                     return response()->json([

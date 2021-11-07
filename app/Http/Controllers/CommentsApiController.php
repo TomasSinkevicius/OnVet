@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 
 class CommentsApiController extends Controller
@@ -21,12 +22,19 @@ class CommentsApiController extends Controller
         if(! $isGuest){
             $user_id = auth()->user()->id;
 
-            return Comment::create([
-                'author_name'=> request('author_name'),
-                'comment_text' => request('comment_text'),
-                'post_id' => request('post_id'),
-                'user_id'=> $user_id,
-            ]);
+            if (Post::where('id', request('post_id'))->exists()) {
+                return Comment::create([
+                    'author_name'=> request('author_name'),
+                    'comment_text' => request('comment_text'),
+                    'post_id' => request('post_id'),
+                    'user_id'=> $user_id,
+                ]);
+             }
+            else{
+                return response()->json([
+                    "message" => "Post not found"
+                ], 404);
+            }
         }
         else{
             return response()->json([
@@ -64,19 +72,26 @@ class CommentsApiController extends Controller
 
                 $comment->author_name = is_null($request->author_name) ? $comment->author_name : $request->author_name;
                 $comment->comment_text = is_null($request->comment_text) ? $comment->comment_text : $request->comment_text;
-                $comment->post_id = is_null($request->post_id) ? $comment->post_id : $request->post_id;
+                // $comment->post_id = is_null($request->post_id) ? $comment->post_id : $request->post_id;
+                $comment->post_id = $comment->post_id;
                 $comment->user_id = $comment->user_id;
                 $comment->save();
 
                 return response()->json([
-                    "message" => "comment updated successfully"
+                    "message" => "Comment updated successfully"
                 ], 200);}
 
-                } else {
-                return response()->json([
-                    "message" => "comment not found"
-                ], 404);
-            }
+                else{
+                    return response()->json([
+                        "message" => "Unauthorized"
+                      ], 401);
+                }
+
+                } else{
+                    return response()->json([
+                        "message" => "Comment not found"
+                    ], 404);
+                }
         }
         else{
             return response()->json([
@@ -96,12 +111,24 @@ class CommentsApiController extends Controller
 
 
               if(Comment::where('id', $id)->exists()) {
-                $comment = Comment::find($id);
-                $comment->delete();
 
-                return response()->json([
-                  "message" => "Comment deleted"
-                ], 202);
+
+                $comment = Comment::find($id);
+
+                if($user_id == $comment->user_id || $user_role == 1){
+
+                    $comment->delete();
+
+                    return response()->json([
+                    "message" => "Comment deleted"
+                    ], 202);}
+
+                else{
+                    return response()->json([
+                        "message" => "Unauthorized"
+                      ], 401);
+                }
+
               } else {
                 return response()->json([
                   "message" => "Comment not found"
