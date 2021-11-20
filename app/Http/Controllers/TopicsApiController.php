@@ -47,6 +47,11 @@ class TopicsApiController extends Controller
 
     public function store()
     {
+        if(request('title') == null){
+            return response()
+                         ->json(["message" => "Not all data fields filled"], 403);
+        }
+        else{
 
         request()
             ->validate(['title' => 'required', ]);
@@ -64,11 +69,13 @@ class TopicsApiController extends Controller
         {
             return response()->json(["message" => "Unauthorized"], 401);
         }
+        }
     }
 
     public function update(Request $request, $id)
-    {
 
+
+    {
         $isGuest = auth()->guest();
 
         //Checks if user is logged in.
