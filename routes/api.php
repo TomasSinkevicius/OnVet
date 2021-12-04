@@ -65,6 +65,8 @@ Route::put('/topics/{topic}',[TopicsApiController::class,'update']);
 
 Route::delete('/topics/{topic}',[TopicsApiController::class,'destroy']);
 
+Route::get('/topics/{topic}/posts',[TopicsApiController::class,'getTopicPosts']);
+
 
 Route::get('/comments', [CommentsApiController::class, 'index']);
 

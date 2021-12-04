@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Topic;
+use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 
 class TopicsApiController extends Controller
@@ -164,6 +165,20 @@ class TopicsApiController extends Controller
         {
             return response()
                 ->json(["message" => "Unauthorized"], 401);
+        }
+    }
+
+    public function getTopicPosts($id, Post $posts)
+    {
+        if (Topic::where('id', $id)->exists())
+        {
+            $topic = Topic::where('id', $id)->get();
+            return response(($post = Post::where('topic_id', $id)->get()) , 200);
+        }
+        else
+        {
+            return response()
+                ->json(["message" => "Topic not found"], 404);
         }
     }
 
