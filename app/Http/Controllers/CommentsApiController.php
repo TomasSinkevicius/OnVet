@@ -20,16 +20,18 @@ class CommentsApiController extends Controller
 
         $isGuest = auth()->guest();
 
+
         //Checks if user is logged in.
         if (!$isGuest)
         {
             $user_id = auth()->user()->id;
+            $user_name = auth()->user()->name;
 
             //Checks if post with id declared in the request exists.
             if (Post::where('id', request('post_id'))
                 ->exists())
             {
-                return Comment::create(['author_name' => request('author_name') , 'comment_text' => request('comment_text') , 'post_id' => request('post_id') , 'user_id' => $user_id, ]);
+                return Comment::create(['author_name' => $user_name , 'comment_text' => request('comment_text') , 'post_id' => request('post_id') , 'user_id' => $user_id, ]);
             }
             else
             {
@@ -68,6 +70,7 @@ class CommentsApiController extends Controller
 
             $user_id = auth()->user()->id;
             $user_role = auth()->user()->role;
+            $user_name = auth()->user()->name;
 
             //Checks if comment exists
             if (Comment::where('id', $id)->exists())
@@ -75,10 +78,10 @@ class CommentsApiController extends Controller
                 $comment = Comment::find($id);
 
                 //Checks if its current users comment or its an admin trying to update.
-                if ($user_id == $comment->user_id || $user_role == 0)
+                if ($user_id == $comment->user_id || $user_role == 1)
                 {
 
-                    $comment->author_name = is_null($request->author_name) ? $comment->author_name : $request->author_name;
+                    $comment->author_name = $comment->author_name;
                     $comment->comment_text = is_null($request->comment_text) ? $comment->comment_text : $request->comment_text;
                     // $comment->post_id = is_null($request->post_id) ? $comment->post_id : $request->post_id;
                     $comment->post_id = $comment->post_id;
@@ -128,7 +131,7 @@ class CommentsApiController extends Controller
                 $comment = Comment::find($id);
 
                 //Checks if its current users comment or its an admin trying to update.
-                if ($user_id == $comment->user_id || $user_role == 0)
+                if ($user_id == $comment->user_id || $user_role == 1)
                 {
 
                     $comment->delete();

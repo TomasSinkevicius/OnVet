@@ -78,7 +78,7 @@ class PostsApiController extends Controller
                 $post = Post::find($id);
 
                 //Checks if its current users post or its an admin trying to update.
-                if ($user_id == $post->user_id || $user_role == 0)
+                if ($user_id == $post->user_id || $user_role == 1)
                 {
 
                     $post->title = is_null($request->title) ? $post->title : $request->title;
@@ -128,7 +128,7 @@ class PostsApiController extends Controller
                 $post = Post::find($id);
 
                 //Checks if its current users post or its an admin trying to delete.
-                if ($user_id == $post->user_id || $user_role == 0)
+                if ($user_id == $post->user_id || $user_role == 1)
                 {
 
                     $post->delete();
