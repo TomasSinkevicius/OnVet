@@ -141,7 +141,7 @@ class TopicsApiController extends Controller
                 $topic = Topic::find($id);
 
                 //Checks if its current users topic or its an admin trying to delete.
-                if ($user_id == $topic->user_id || $user_role == 1)
+                if ($user_id == $topic->user_id || $user_role == 0)
                 {
 
                     $topic->delete();

@@ -128,7 +128,7 @@ class PostsApiController extends Controller
                 $post = Post::find($id);
 
                 //Checks if its current users post or its an admin trying to delete.
-                if ($user_id == $post->user_id || $user_role == 1)
+                if ($user_id == $post->user_id || $user_role == 0)
                 {
 
                     $post->delete();

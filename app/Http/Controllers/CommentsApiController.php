@@ -75,7 +75,7 @@ class CommentsApiController extends Controller
                 $comment = Comment::find($id);
 
                 //Checks if its current users comment or its an admin trying to update.
-                if ($user_id == $comment->user_id || $user_role == 1)
+                if ($user_id == $comment->user_id || $user_role == 0)
                 {
 
                     $comment->author_name = is_null($request->author_name) ? $comment->author_name : $request->author_name;
