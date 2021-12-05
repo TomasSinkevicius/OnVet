@@ -37,12 +37,13 @@ class PostsApiController extends Controller
             ->validate(['title' => 'required', 'content' => 'required', 'topic_id' => 'required', ]);
 
         $isGuest = auth()->guest();
-        $user_name = auth()->user()->name;
+
 
         //Checks if user is logged in.
         if (!$isGuest)
         {
             $user_id = auth()->user()->id;
+            $user_name = auth()->user()->name;
 
             if (Topic::where('id', request('topic_id'))
                 ->exists())
