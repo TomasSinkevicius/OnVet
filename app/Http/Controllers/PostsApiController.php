@@ -47,7 +47,7 @@ class PostsApiController extends Controller
             if (Topic::where('id', request('topic_id'))
                 ->exists())
             {
-                return Post::create(['author_name' => $user_name,'title' => request('title') , 'content' => request('content') , 'topic_id' => request('topic_id') , 'user_id' => $user_id, ]);
+                return Post::create(['title' => request('title') , 'content' => request('content') , 'topic_id' => request('topic_id') , 'user_id' => $user_id,'author_name' => $user_name ]);
             }
             else
             {
@@ -81,12 +81,13 @@ class PostsApiController extends Controller
                 //Checks if its current users post or its an admin trying to update.
                 if ($user_id == $post->user_id || $user_role == 1)
                 {
-                    $post->author_name = $post->author_name;
                     $post->title = is_null($request->title) ? $post->title : $request->title;
                     $post->content = is_null($request->content) ? $post->content : $request->content;
                     // $post->topic_id = is_null($request->topic_id) ? $post->topic_id : $request->topic_id;
                     $post->topic_id = $post->topic_id;
                     $post->user_id = $post->user_id;
+                    $post->author_name = $post->author_name;
+
                     $post->save();
 
                     return response()
